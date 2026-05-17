@@ -118,6 +118,30 @@ endif' programs/localized/Makefile.am
   rm -f programs/localized/Makefile.am.bak
 fi
 
+echo "=== Removing dtcm (FreeBSD compatibility fix) ==="
+rm -rf programs/dtcm
+
+# 从主配置文件删除所有 dtcm 引用
+sed -i.bak '/dtcm/d' configure.ac
+rm -f configure.ac.bak
+
+# 从编译目录列表删除 dtcm
+if [ -f programs/Makefile.am ]; then
+  sed -i.bak '/dtcm/d' programs/Makefile.am
+  rm -f programs/Makefile.am.bak
+fi
+
+# 清理本地化文件中的 dtcm 依赖
+for f in \
+  programs/localized/C/app-defaults/Makefile \
+  programs/localized/C/msg/Makefile
+do
+  if [ -f "$f" ]; then
+    sed -i.bak '/dtcm/d' "$f"
+    rm -f "$f.bak"
+  fi
+done
+
 echo "=== Creating locale templates ==="
 mkdir -p programs/localized/templates
 
@@ -196,3 +220,4 @@ for pair in 'zh_CN.UTF-8:CN' 'zh_TW.UTF-8:TW'; do
 done
 
 echo "=== All patches applied ==="
+echo "=== You can now run: ./autogen.sh && ./configure ... && gmake ==="
