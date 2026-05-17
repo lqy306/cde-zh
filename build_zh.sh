@@ -240,6 +240,30 @@ else
 fi
 sep
 ok "编译成功！"
-info "安装: sudo make install"
-info "启动: startx /usr/dt/bin/Xsession"
+
+# ── 安装 ──
+printf "${C}[?]${N} 是否安装到 /usr/dt 并添加 CDE 登录会话？(需要 sudo) [Y/n] "
+read -r answer
+case "$answer" in
+  n|N|no|NO) info "跳过安装"; info "手动安装: cd $(pwd) && sudo make install -C util && sudo make install -C include && sudo make install -C lib && sudo make install -C programs && sudo make install -C programs/localized && sudo cp contrib/desktopentry/cde.desktop /usr/share/xsessions/"; sep; exit 0 ;;
+  *) ;;
+esac
+
+sep; info "安装中..."
+
+sudo make install -C util              || warn "util 安装失败"
+sudo make install -C include           || warn "include 安装失败"
+sudo make install -C lib               || warn "lib 安装失败"
+sudo make install -C programs          || warn "programs 安装失败（可能来自 dtdocbook，不影响运行）"
+sudo make install -C programs/localized || warn "localized 安装失败"
+
+if [ -f contrib/desktopentry/cde.desktop ]; then
+  sudo mkdir -p /usr/share/xsessions
+  sudo cp contrib/desktopentry/cde.desktop /usr/share/xsessions/
+  ok "已安装桌面入口 /usr/share/xsessions/cde.desktop"
+fi
+
+sep
+ok "安装完成！"
+info "登录界面选择 CDE 或运行: startx /usr/dt/bin/Xsession"
 sep
