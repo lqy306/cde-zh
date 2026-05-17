@@ -91,7 +91,7 @@ sedi '/ja_JP.UTF-8\/appmanager\/Makefile/a\
 ' configure.ac
 fi
 
-# 安全追加中文SUBDIRS（全平台兼容）
+# 安全追加中文SUBDIRS
 f=programs/localized/Makefile.am
 if ! grep -q "CHINESE" "$f"; then
 cat >> "$f" <<'EOF'
@@ -106,21 +106,24 @@ endif
 EOF
 fi
 
-echo "=== Fixing build issues ==="
+echo "=== Fixing build WITHOUT disabling dtscreen ==="
 
-# 1. 删除冲突模块（dtcm + dtscreen 都删掉）
-rm -rf programs/dtcm programs/dtscreen
+# 删除 dtcm
+rm -rf programs/dtcm
 sedi '/dtcm/d' configure.ac 2>/dev/null || true
 sedi '/dtcm/d' programs/Makefile.am 2>/dev/null || true
-sedi '/dtscreen/d' configure.ac 2>/dev/null || true
-sedi '/dtscreen/d' programs/Makefile.am 2>/dev/null || true
 
-# 2. 强制修复本地化编译：直接创建空的 Dtscreen 文件，绕过缺失错误
+# 提前生成 dtscreen 需要的 Dtscreen 文件
 mkdir -p programs/dtscreen
+if [ -f programs/dtscreen/Dtscreen.src ]; then
+  ../../util/tradcpp/tradcpp -P -C -DXCOMM=# \
+    -DCDE_INSTALLATION_TOP=/usr/dt \
+    -DCDE_CONFIGURATION_TOP=/etc/dt \
+    programs/dtscreen/Dtscreen.src > programs/dtscreen/Dtscreen || true
+fi
 touch programs/dtscreen/Dtscreen
-chmod +r programs/dtscreen/Dtscreen
 
-# 3. 修复 merge.c main 函数返回值错误
+# 修复 merge.c main 函数
 sedi 's/void main/int main/' programs/localized/util/merge.c 2>/dev/null || true
 
 # 创建中文目录
@@ -162,4 +165,4 @@ for base in zh_CN.UTF-8 zh_TW.UTF-8; do
     echo "include ../../templates/$t.am" > programs/localized/$base/appmanager/Makefile.am
 done
 
-echo "=== ALL PATCHES APPLIED SUCCESSFULLY ==="
+echo "=== ALL PATCHES APPLIED (dtscreen 已保留并修复) ==="
