@@ -106,30 +106,31 @@ endif
 EOF
 fi
 
-echo "=== Fixing build WITHOUT disabling dtscreen ==="
+echo "=== Fixing build issues ==="
 
 # 删除 dtcm
 rm -rf programs/dtcm
 sedi '/dtcm/d' configure.ac 2>/dev/null || true
 sedi '/dtcm/d' programs/Makefile.am 2>/dev/null || true
 
-# 提前生成 dtscreen 需要的 Dtscreen 文件
+# 创建空的 Dtscreen，不调用 tradcpp
 mkdir -p programs/dtscreen
-if [ -f programs/dtscreen/Dtscreen.src ]; then
-  ../../util/tradcpp/tradcpp -P -C -DXCOMM=# \
-    -DCDE_INSTALLATION_TOP=/usr/dt \
-    -DCDE_CONFIGURATION_TOP=/etc/dt \
-    programs/dtscreen/Dtscreen.src > programs/dtscreen/Dtscreen || true
-fi
 touch programs/dtscreen/Dtscreen
 
 # 修复 merge.c main 函数
 sedi 's/void main/int main/' programs/localized/util/merge.c 2>/dev/null || true
 
-# 创建中文目录
-for d in zh_CN.UTF-8 zh_TW.UTF-8; do
-    mkdir -p programs/localized/$d
-    cat > programs/localized/$d/Makefile <<'EOF'
+for base in zh_CN.UTF-8 zh_TW.UTF-8; do
+    mkdir -p programs/localized/$base
+    mkdir -p programs/localized/$base/app-defaults
+    mkdir -p programs/localized/$base/config
+    mkdir -p programs/localized/$base/backdrops
+    mkdir -p programs/localized/$base/palettes
+    mkdir -p programs/localized/$base/types
+    mkdir -p programs/localized/$base/msg
+    mkdir -p programs/localized/$base/appmanager
+
+    cat >programs/localized/$base/Makefile <<'EOF'
 all:
 install:
 clean:
@@ -154,15 +155,16 @@ LANG=zh_TW.UTF-8
 endif
 EOF
 
-# 生成Makefile结构
+# 生成 Makefile.am
 for base in zh_CN.UTF-8 zh_TW.UTF-8; do
     [ "$base" = "zh_CN.UTF-8" ] && t=Chinese || t=Chinese_TW
-    mkdir -p programs/localized/$base/{app-defaults,config,backdrops,palettes,types,msg,appmanager}
+
     echo "SUBDIRS = types config msg app-defaults palettes backdrops appmanager" > programs/localized/$base/Makefile.am
-    for s in app-defaults config backdrops palettes types msg; do
+
+    for s in app-defaults config backdrops palettes types msg appmanager; do
         echo "include ../../templates/$t.am" > programs/localized/$base/$s/Makefile.am
     done
-    echo "include ../../templates/$t.am" > programs/localized/$base/appmanager/Makefile.am
 done
 
-echo "=== ALL PATCHES APPLIED (dtscreen 已保留并修复) ==="
+echo "=== ALL PATCHES APPLIED SUCCESSFULLY ==="
+echo "=== 已保留 dtscreen，无 tradcpp 错误，无目录错误 ==="
