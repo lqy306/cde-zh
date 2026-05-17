@@ -17,12 +17,13 @@ cd "$(dirname "$0")"
 [ -f configure.ac ] || { err "请在 CDE 源码根目录下运行"; exit 1; }
 
 # ── 解析参数 ──
-FORCE_CN=false; FORCE_TW=false; CONFIGURE_ARGS=""
+FORCE_CN=false; FORCE_TW=false; WITH_DOC=false; CONFIGURE_ARGS=""
 for arg in "$@"; do
   case "$arg" in
     --force-all)       FORCE_CN=true;  FORCE_TW=true  ;;
     --force-zh_CN)     FORCE_CN=true                    ;;
     --force-zh_TW)                    FORCE_TW=true    ;;
+    --with-doc)        WITH_DOC=true                    ;;
     *)                 CONFIGURE_ARGS="$CONFIGURE_ARGS $arg" ;;
   esac
 done
@@ -227,6 +228,7 @@ sep; info "运行 configure..."
 CONFIGURE_FLAGS=""
 [ -n "$ENABLE_CN" ] && CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-chinese"
 [ -n "$ENABLE_TW" ] && CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-chinese-tw"
+[ "$WITH_DOC" = false ] && CONFIGURE_FLAGS="$CONFIGURE_FLAGS --disable-docs"
 ./configure $CONFIGURE_FLAGS $CONFIGURE_ARGS
 ok "configure 完成"
 
