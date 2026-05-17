@@ -34,7 +34,11 @@ xorg-x11-fonts-100dpi rpcgen bdftopcf libXdmcp-devel
 ## OpenSUSE
 
 ```sh
-sudo zypper install git autoconf automake libtool gcc-c++ motif motif-devel make m4 ksh libXinerama-devel libXdmcp-devel libXScrnSaver-devel libXmu-devel libXaw-devel libXft-devel xset libtirpc-devel libjpeg-devel tcl-devel ncompress bison rpcbind freetype-devel libopenssl-devel pam-devel patch bdftopcf libutempter-devel opensp libXrender-devel sessreg lmdb-dev
+sudo zypper install git autoconf automake libtool gcc-c++ motif motif-devel make \
+m4 ksh libXinerama-devel libXdmcp-devel libXScrnSaver-devel libXmu-devel libXaw-devel \
+libXft-devel xset libtirpc-devel libjpeg-devel tcl-devel ncompress bison rpcbind \
+freetype-devel libopenssl-devel pam-devel patch bdftopcf libutempter-devel opensp \
+libXrender-devel sessreg lmdb-dev
 ```
 
 ## FreeBSD
