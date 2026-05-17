@@ -108,10 +108,20 @@ fi
 
 echo "=== Fixing build issues ==="
 
-# 删除冲突模块
-rm -rf programs/dtcm
+# 1. 删除冲突模块（dtcm + dtscreen 都删掉）
+rm -rf programs/dtcm programs/dtscreen
 sedi '/dtcm/d' configure.ac 2>/dev/null || true
 sedi '/dtcm/d' programs/Makefile.am 2>/dev/null || true
+sedi '/dtscreen/d' configure.ac 2>/dev/null || true
+sedi '/dtscreen/d' programs/Makefile.am 2>/dev/null || true
+
+# 2. 强制修复本地化编译：直接创建空的 Dtscreen 文件，绕过缺失错误
+mkdir -p programs/dtscreen
+touch programs/dtscreen/Dtscreen
+chmod +r programs/dtscreen/Dtscreen
+
+# 3. 修复 merge.c main 函数返回值错误
+sedi 's/void main/int main/' programs/localized/util/merge.c 2>/dev/null || true
 
 # 创建中文目录
 for d in zh_CN.UTF-8 zh_TW.UTF-8; do
