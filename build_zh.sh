@@ -11,14 +11,13 @@ sep()  { echo "----------------------------------------"; }
 
 # Detect OS: Linux or BSD
 detect_os() {
-    if uname | grep -qi linux; then
-        echo "linux"
-    elif uname | grep -qi bsd; then
-        echo "bsd"
-    else
-        echo "unknown"
-    fi
+    case $(uname -s) in
+        Linux*) echo "linux" ;;
+        *BSD*)  echo "bsd" ;;
+        *)      echo "linux" ;;
+    esac
 }
+OS=$(detect_os)
 OS=$(detect_os)
 info "Detected OS: $OS"
 
