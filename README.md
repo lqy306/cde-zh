@@ -8,7 +8,7 @@
 
 将脚本复制到CDE源码下即可安装。安装前，请确认你的系统安装了你目标语言的local（比如zh_CN或zh_TW）。
 
-Linux用户使用build_zh.sh，FreeBSD用户使用preprocessing_freebsd.sh（预处理）。
+Linux用户使用build_linux.sh，FreeBSD用户使用preprocessing_freebsd.sh（预处理）。
 
 # 依赖说明
 
