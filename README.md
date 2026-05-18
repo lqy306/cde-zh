@@ -1,6 +1,12 @@
 # cde-zh
 
+## 效果展示：
+
 <img width="1718" height="921" alt="image" src="https://github.com/user-attachments/assets/2279def7-06b2-4ebf-886a-f656e7b47176" />
+
+<img width="1280" height="720" alt="FreeBSD-2026-05-18-18-27-59" src="https://github.com/user-attachments/assets/34028766-f0ad-4210-921e-933b8f1ebff9" />
+
+## 介绍
 
 这是一个Common Desktop Environment的快速汉化编译安装工具。
 
@@ -10,11 +16,11 @@
 
 Linux用户使用build_linux.sh，FreeBSD用户使用preprocessing_freebsd.sh（预处理）。
 
-# 依赖说明
+## 依赖说明
 
 顺便补充一下官方关于安装依赖的说明：
 
-## Debina（Ubuntu）
+### Debina（Ubuntu）
 
 ```sh
 sudo apt-get -y install autoconf automake libtool git build-essential g++ libxt-dev libxmu-dev \
@@ -24,7 +30,7 @@ ncompress xfonts-100dpi xfonts-75dpi xfonts-100dpi-transcoded xfonts-75dpi-trans
 patch xbitmaps x11proto-fonts-dev flex opensp x11-xserver-utils liblmdb-dev
 ```
 
-## RHEL（Fedora）
+### RHEL（Fedora）
 
 ```sh
 sudo dnf group install c-development development-tools
@@ -35,7 +41,7 @@ rpcbind bison xorg-x11-xbitmaps xorg-x11-proto-devel flex opensp libXrender-deve
 xorg-x11-fonts-100dpi rpcgen bdftopcf libXdmcp-devel
 ```
 
-## OpenSUSE
+### OpenSUSE
 
 ```sh
 sudo zypper install git autoconf automake libtool gcc-c++ motif motif-devel make \
@@ -45,7 +51,7 @@ freetype-devel libopenssl-devel pam-devel patch bdftopcf libutempter-devel opens
 libXrender-devel sessreg lmdb-dev
 ```
 
-## FreeBSD
+### FreeBSD
 
 ```sh
 portmaster -C -D --no-confirm -y \
