@@ -16,6 +16,18 @@
 
 Linux用户使用build_linux.sh，FreeBSD用户使用preprocessing_freebsd.sh（预处理）。
 
+顺便说明一下，这样的小工具我没有用git，是网页端直接提交，所以很乱，很正常，见谅！
+
+This is a quick Chinese localization compilation and installation tool for the Common Desktop Environment.
+
+This is a very simple script. In fact, the original source code of CDE already includes Chinese support (programs/localized), so the script merely modifies the compilation parameters to enable the default Chinese language support.
+
+Simply copy the script to the CDE source code directory to proceed with the installation. Prior to installation, please confirm that your system has the local language pack (such as zh_CN or zh_TW) for your target language installed.
+
+Linux users use build_linux.sh, while FreeBSD users use preprocessing_freebsd.sh (for preprocessing).
+
+By the way, I didn't use git for this small tool. I submitted it directly through the web interface, so it's messy, which is quite normal. Please forgive me!
+
 ## 依赖说明
 
 顺便补充一下官方关于安装依赖的说明：
