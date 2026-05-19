@@ -16,11 +16,6 @@ sep()  { printf "${C}%s${N}\n" "━━━━━━━━━━━━━━━━
 cd "$(dirname "$0")"
 [ -f configure.ac ] || { err "请在 CDE 源码根目录下运行"; exit 1; }
 
-
-
-
-
-
 # ── 解析参数 ──
 FORCE_CN=false; FORCE_TW=false; WITH_DOC=false; CONFIGURE_ARGS=""
 for arg in "$@"; do
@@ -61,8 +56,6 @@ locale_avail() {
 }
 
 ENABLE_CN=""; ENABLE_TW=""; NEED_LC_ALL_C=false
-
-
 
 for pair in 'zh_CN.UTF-8:CN' 'zh_TW.UTF-8:TW'; do
   lang="${pair%:*}"; var="${pair#*:}"
@@ -143,7 +136,9 @@ sep; info "创建 LANG 模板..."
 mkdir -p programs/localized/templates
 
 cat > programs/localized/templates/Chinese.am <<'TMPL'
-@@ -148,10 +136,8 @@ else
+if INSTALL_ZH_CN
+LANG=zh_CN.UTF-8
+else
 LANG=zh_TW.UTF-8
 endif
 TMPL
@@ -154,7 +149,15 @@ sep; info "创建中文构建文件..."
 for base in zh_CN.UTF-8 zh_TW.UTF-8; do
   case "$base" in
     zh_CN.UTF-8) tmpl=Chinese ;;
-@@ -167,7 +153,6 @@ EOF
+    zh_TW.UTF-8) tmpl=Chinese ;;
+  esac
+
+  mkdir -p "programs/localized/$base"/{app-defaults,config,backdrops,palettes,types,msg,appmanager}
+
+  cat > "programs/localized/$base/Makefile.am" <<EOF
+SUBDIRS = app-defaults config backdrops palettes types msg appmanager
+EOF
+
   for sub in app-defaults config backdrops palettes types msg; do
     cat > "programs/localized/$base/$sub/Makefile.am" <<EOF
 MAINTAINERCLEANFILES = Makefile.in
@@ -162,7 +165,7 @@ MAINTAINERCLEANFILES = Makefile.in
 include ../../templates/$tmpl.am
 include ../../templates/$sub.am
 EOF
-@@ -179,93 +164,35 @@ EOF
+  done
 
   cat > "programs/localized/$base/appmanager/Makefile.am" <<EOF
 MAINTAINERCLEANFILES = Makefile.in
