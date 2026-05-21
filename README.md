@@ -14,19 +14,9 @@
 
 将脚本复制到CDE源码下即可安装。安装前，请确认你的系统安装了你目标语言的local（比如zh_CN或zh_TW）。
 
-Linux用户使用build_linux.sh，FreeBSD用户使用preprocessing_freebsd.sh（预处理）。
+推荐使用补丁，因为它是全平台适用的，只修改了语言相关部分，理论上只要原版 CDE 可以编译通过，这一版本就可以。如果你需要使用脚本，Linux用户使用build_linux.sh，FreeBSD用户使用preprocessing_freebsd.sh（预处理）。
 
 顺便说明一下，这样的小工具我没有用git，是网页端直接提交，所以很乱，很正常，见谅！
-
-This is a quick Chinese localization compilation and installation tool for the Common Desktop Environment.
-
-This is a very simple script. In fact, the original source code of CDE already includes Chinese support (programs/localized), so the script merely modifies the compilation parameters to enable the default Chinese language support.
-
-Simply copy the script to the CDE source code directory to proceed with the installation. Prior to installation, please confirm that your system has the local language pack (such as zh_CN or zh_TW) for your target language installed.
-
-Linux users use build_linux.sh, while FreeBSD users use preprocessing_freebsd.sh (for preprocessing).
-
-By the way, I didn't use git for this small tool. I submitted it directly through the web interface, so it's messy, which is quite normal. Please forgive me!
 
 ## 依赖说明
 
