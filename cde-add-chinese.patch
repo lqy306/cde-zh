@@ -1,0 +1,515 @@
+diff --git a/cde/configure.ac b/cde/configure.ac
+index 1a01b8bf3..388bfe4fc 100644
+--- a/cde/configure.ac
++++ b/cde/configure.ac
+@@ -220,6 +220,18 @@ AC_ARG_ENABLE([japanese],
+ )
+ AM_CONDITIONAL([JAPANESE], [test -n "$enable_ja"])
+
++AC_ARG_ENABLE([chinese],
++        AS_HELP_STRING([--enable-chinese], [Build Chinese (zh_CN.UTF-8) locale (default=no)]),
++        [enable_zh="yes"], [enable_zh=""]
++)
++AM_CONDITIONAL([CHINESE], [test -n "$enable_zh"])
++
++AC_ARG_ENABLE([chinese-tw],
++        AS_HELP_STRING([--enable-chinese-tw], [Build Chinese Traditional (zh_TW.UTF-8) locale (default=no)]),
++        [enable_zt="yes"], [enable_zt=""]
++)
++AM_CONDITIONAL([CHINESE_TW], [test -n "$enable_zt"])
++
+ dnl interface font
+ AC_ARG_ENABLE([misc-fixed],
+         AS_HELP_STRING([--enable-misc-fixed], [Set interface font to misc-fixed (default=no)]),
+@@ -916,6 +928,22 @@ programs/localized/ja_JP.UTF-8/types/Makefile
+ programs/localized/ja_JP.UTF-8/palettes/Makefile
+ programs/localized/ja_JP.UTF-8/msg/Makefile
+ programs/localized/ja_JP.UTF-8/appmanager/Makefile
++programs/localized/zh_CN.UTF-8/Makefile
++programs/localized/zh_CN.UTF-8/app-defaults/Makefile
++programs/localized/zh_CN.UTF-8/config/Makefile
++programs/localized/zh_CN.UTF-8/backdrops/Makefile
++programs/localized/zh_CN.UTF-8/types/Makefile
++programs/localized/zh_CN.UTF-8/palettes/Makefile
++programs/localized/zh_CN.UTF-8/msg/Makefile
++programs/localized/zh_CN.UTF-8/appmanager/Makefile
++programs/localized/zh_TW.UTF-8/Makefile
++programs/localized/zh_TW.UTF-8/app-defaults/Makefile
++programs/localized/zh_TW.UTF-8/config/Makefile
++programs/localized/zh_TW.UTF-8/backdrops/Makefile
++programs/localized/zh_TW.UTF-8/types/Makefile
++programs/localized/zh_TW.UTF-8/palettes/Makefile
++programs/localized/zh_TW.UTF-8/msg/Makefile
++programs/localized/zh_TW.UTF-8/appmanager/Makefile
+
+ doc/Makefile
+
+diff --git a/cde/programs/localized/Makefile.am b/cde/programs/localized/Makefile.am
+index 8d9a5d555..aa711d2e3 100644
+--- a/cde/programs/localized/Makefile.am
++++ b/cde/programs/localized/Makefile.am
+@@ -19,3 +19,11 @@ endif
+ if JAPANESE
+ SUBDIRS += ja_JP.UTF-8
+ endif
++
++if CHINESE
++SUBDIRS += zh_CN.UTF-8
++endif
++
++if CHINESE_TW
++SUBDIRS += zh_TW.UTF-8
++endif
+diff --git a/cde/programs/localized/templates/Chinese.am b/cde/programs/localized/templates/Chinese.am
+new file mode 100644
+index 000000000..f8d19dcce
+--- /dev/null
++++ b/cde/programs/localized/templates/Chinese.am
+@@ -0,0 +1,5 @@
++if SOLARIS
++LANG=zh
++else
++LANG=zh_CN.UTF-8
++endif
+diff --git a/cde/programs/localized/templates/Chinese_TW.am b/cde/programs/localized/templates/Chinese_TW.am
+new file mode 100644
+index 000000000..b97e43531
+--- /dev/null
++++ b/cde/programs/localized/templates/Chinese_TW.am
+@@ -0,0 +1,5 @@
++if SOLARIS
++LANG=zh
++else
++LANG=zh_TW.UTF-8
++endif
+diff --git a/cde/programs/localized/zh_CN.UTF-8/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/Makefile.am
+new file mode 100644
+index 000000000..778150d52
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/Makefile.am
+@@ -0,0 +1 @@
++SUBDIRS = types config msg app-defaults palettes backdrops appmanager
+diff --git a/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtbuilder.tmsg b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtbuilder.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtbuilder.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtinfo.tmsg b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtinfo.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtinfo.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtlogin.tmsg b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtlogin.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtlogin.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtudcfonted.tmsg b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtudcfonted.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Dtudcfonted.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_CN.UTF-8/app-defaults/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Makefile.am
+new file mode 100644
+index 000000000..74648b951
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/app-defaults/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/app-defaults.am
+diff --git a/cde/programs/localized/zh_CN.UTF-8/appmanager/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/appmanager/Makefile.am
+new file mode 100644
+index 000000000..dfe6aae82
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/appmanager/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/appmgr.am
+diff --git a/cde/programs/localized/zh_CN.UTF-8/backdrops/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/backdrops/Makefile.am
+new file mode 100644
+index 000000000..b7625549d
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/backdrops/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/backdrops.am
+diff --git a/cde/programs/localized/zh_CN.UTF-8/config/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/config/Makefile.am
+new file mode 100644
+index 000000000..99c5c73f7
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/config/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/config.am
+diff --git a/cde/programs/localized/zh_CN.UTF-8/msg/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/msg/Makefile.am
+new file mode 100644
+index 000000000..35392e66d
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/msg/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/msg.am
+diff --git a/cde/programs/localized/zh_CN.UTF-8/palettes/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/palettes/Makefile.am
+new file mode 100644
+index 000000000..2fda8958b
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/palettes/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/palettes.am
+diff --git a/cde/programs/localized/zh_CN.UTF-8/types/Makefile.am b/cde/programs/localized/zh_CN.UTF-8/types/Makefile.am
+new file mode 100644
+index 000000000..8718d4be4
+--- /dev/null
++++ b/cde/programs/localized/zh_CN.UTF-8/types/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese.am
++include ../../templates/types.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/Makefile.am
+new file mode 100644
+index 000000000..778150d52
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/Makefile.am
+@@ -0,0 +1 @@
++SUBDIRS = types config msg app-defaults palettes backdrops appmanager
+diff --git a/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtbuilder.tmsg b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtbuilder.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtbuilder.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtinfo.tmsg b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtinfo.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtinfo.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtlogin.tmsg b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtlogin.tmsg
+index 3a34cf551..39fdfaec9 100644
+--- a/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtlogin.tmsg
++++ b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtlogin.tmsg
+@@ -1,46 +1 @@
+-$ $XConsortium: Dtlogin.tmsg /main/2 1996/10/30 14:10:27 drk $
+ $set 1
+-$ *
+-$ *****************************************************************************
+-$ * Dtlogin.tmsg
+-$ *
+-$ * Translatable Strings for Dtlogin
+-$ *
+-$ * Copyright (c) 1993 Hewlett-Packard Company
+-$ * Copyright (c) 1993 International Business Machines Corp.
+-$ * Copyright (c) 1993 Sun Microsystems, Inc.
+-$ *
+-$ *****************************************************************************
+-
+-$ *****************************************************************************
+-$ *
+-$ *  Format of this message file.
+-$ *    $set n [comment] ... n must be 1.
+-$ *    $ [comment]
+-$ *    m message-text ... Message text may contain following spcial characters
+-$ *                       and escape sequences.
+-$ *                         \\                  backslash
+-$ *                         \n                  newline
+-$ *                         \t                  horizontal tab
+-$ *                         \ (at end of line)  continue on same line
+-$ *
+-$ *****************************************************************************
+-$ ----------------------------------------------------------------------------
+-$ Do not translate message 1 - 5.
+-$ These are not messages, but locale dependent values.
+-$ ----------------------------------------------------------------------------
+-$
+-$ Dtlogin*labelFont
+-1 -hp-sung-medium-r-normal--18-*-c-*:
+-$ Dtlogin*textFont
+-2 -hp-sung-medium-r-normal--18-*-c-*:
+-$ Dtlogin*greeting.fontList
+-3 -hp-sung-medium-r-normal--18-*-c-*:
+-$
+-$ login_text.columns = 20 for single-byte
+-$                      10 for multi-byte
+-4 10
+-$
+-$ passwd_text.columns = 20 for single-byte
+-$                       10 for multi-byte
+-5 10
+diff --git a/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtudcfonted.tmsg b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtudcfonted.tmsg
+new file mode 100644
+index 000000000..39fdfaec9
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Dtudcfonted.tmsg
+@@ -0,0 +1 @@
++$set 1
+diff --git a/cde/programs/localized/zh_TW.UTF-8/app-defaults/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Makefile.am
+new file mode 100644
+index 000000000..8e3e89ade
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/app-defaults/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/app-defaults.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/appmanager/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/appmanager/Makefile.am
+new file mode 100644
+index 000000000..9cabb3a7d
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/appmanager/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/appmgr.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/backdrops/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/backdrops/Makefile.am
+new file mode 100644
+index 000000000..a6e082de1
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/backdrops/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/backdrops.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/config/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/config/Makefile.am
+new file mode 100644
+index 000000000..11b2caca2
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/config/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/config.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/msg/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/msg/Makefile.am
+new file mode 100644
+index 000000000..c42b163cf
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/msg/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/msg.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/msg/dtbuilder.msg b/cde/programs/localized/zh_TW.UTF-8/msg/dtbuilder.msg
+index 3d8743239..7050a582a 100644
+--- a/cde/programs/localized/zh_TW.UTF-8/msg/dtbuilder.msg
++++ b/cde/programs/localized/zh_TW.UTF-8/msg/dtbuilder.msg
+@@ -349,7 +349,7 @@ $   ** You can edit this comment and add comments below each message.
+ 1 "按鍵特性編輯器"
+ 3 "顏色："
+ 4 "前景"
+-5 " 　
++5 " "
+ 6 "附屬物..."
+ 7 "輔助說明本文..."
+ 8 "連接..."
+@@ -402,7 +402,7 @@ $   ** You can edit this comment and add comments below each message.
+ 3 "項目："
+ 4 "項目狀態："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 8 "附屬物..."
+ 9 "輔助說明本文..."
+@@ -468,7 +468,7 @@ $   ** You can edit this comment and add comments below each message.
+ 15 "加入項目"
+ 16 "編輯"
+ 17 "背景"
+-18 " 　
++18 " "
+ 19 "前景"
+ 20 "物件名稱："
+ 21 "標籤類別："
+@@ -510,7 +510,7 @@ $   ** DO NOT USE THESE MESSAGES IN YOUR APPLICATION CODE.
+ $      ** You can edit this comment and add comments below each message.
+ 4 "顏色："
+ 5 "背景"
+-6 " 　
++6 " "
+ 8 "附屬物..."
+ 9 "輔助說明本文..."
+ 10 "連接..."
+@@ -552,7 +552,7 @@ $   ** You can edit this comment and add comments below each message.
+ 3 "連接..."
+ 4 "顏色："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 8 "物件名稱："
+ 9 "對話標題："
+@@ -596,7 +596,7 @@ $   ** DO NOT USE THESE MESSAGES IN YOUR APPLICATION CODE.
+ $      ** You can edit this comment and add comments below each message.
+ 4 "顏色："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 9 "附屬物..."
+ 10 "輔助說明本文..."
+@@ -693,7 +693,7 @@ $   ** You can edit this comment and add comments below each message.
+ 8 "標籤對齊："
+ 9 "圖形檔案名稱："
+ 11 "背景"
+-12 " 　
++12 " "
+ 13 "前景"
+ 14 "附屬物..."
+ 15 "輔助說明本文..."
+@@ -734,7 +734,7 @@ $   ** You can edit this comment and add comments below each message.
+ 8 "物件名稱："
+ 9 "選取模式："
+ 10 "背景"
+-11 " 　
++11 " "
+ 12 "前景"
+ 14 "附屬物..."
+ 15 "輔助說明本文..."
+@@ -794,7 +794,7 @@ $   ** You can edit this comment and add comments below each message.
+ 4 "顏色："
+ 5 "視窗區域："
+ 6 "前景"
+-7 " 　
++7 " "
+ 8 "背景"
+ 9 "物件名稱："
+ 10 "視窗標題："
+@@ -845,7 +845,7 @@ $   ** You can edit this comment and add comments below each message.
+ 7 "物件名稱："
+ 9 "擷取："
+ 10 "前景"
+-11 " 　
++11 " "
+ 12 "背景"
+ 13 "輔助說明本文..."
+ 14 "連接..."
+@@ -900,7 +900,7 @@ $   ** You can edit this comment and add comments below each message.
+ 6 "物件名稱："
+ 7 "起始狀態："
+ 8 "背景"
+-9 " 　
++9 " "
+ 10 "前景"
+ 11 "輔助說明本文..."
+ 12 "連接..."
+@@ -941,7 +941,7 @@ $   ** You can edit this comment and add comments below each message.
+ 3 "起始狀態："
+ 4 "顏色："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 8 "附屬物..."
+ 9 "輔助說明本文..."
+@@ -997,7 +997,7 @@ $   ** You can edit this comment and add comments below each message.
+ 3 "顏色："
+ 4 "起始狀態："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 8 "附屬物..."
+ 9 "輔助說明本文..."
+@@ -1048,7 +1048,7 @@ $ ** You can edit this comment and add comments below each message.
+ 13 "Y："
+ 14 "W："
+ 16 "背景"
+-17 " 　
++17 " "
+ 18 "前景"
+ 19 "項目標籤："
+ 20 "物件名稱："
+@@ -1104,7 +1104,7 @@ $ ** You can edit this comment and add comments below each message.
+ 3 "處理字串："
+ 4 "顏色："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 9 "附屬物..."
+ 10 "輔助說明本文..."
+@@ -1151,7 +1151,7 @@ $ ** You can edit this comment and add comments below each message.
+ 5 "輔助說明本文..."
+ 6 "連接..."
+ 7 "背景"
+-8 " 　
++8 " "
+ 9 "前景"
+ 11 "起始狀態："
+ 12 "位置："
+@@ -1192,7 +1192,7 @@ $ ** You can edit this comment and add comments below each message.
+ 1 "文字窗格特性編輯器"
+ 4 "顏色："
+ 5 "背景"
+-6 " 　
++6 " "
+ 7 "前景"
+ 9 "附屬物..."
+ 10 "輔助說明本文..."
+@@ -1314,7 +1314,7 @@ $ ** You can edit this comment and add comments below each message.
+ 3 "連接..."
+ 4 "輔助說明　ext..."
+ 5 "前景"
+-6 " 　
++6 " "
+ 7 "背景"
+ 8 "物件名稱："
+ 9 "母視窗："
+diff --git a/cde/programs/localized/zh_TW.UTF-8/msg/dthello.msg b/cde/programs/localized/zh_TW.UTF-8/msg/dthello.msg
+index 869ad82fe..140e608c1 100644
+--- a/cde/programs/localized/zh_TW.UTF-8/msg/dthello.msg
++++ b/cde/programs/localized/zh_TW.UTF-8/msg/dthello.msg
+@@ -81,5 +81,5 @@ $    DO NOT LOCALIZE THESE MESSAGES
+ $    These messages are used for the version information.
+ $quote "
+ 1 "@(#)version_goes_here"
+-2 "\n@(#)_DtMessage 目錄來源 $XConsortium: dthello.msg /main/3 1995/11/08 14:06:18 rswiston $:
++2 "\n@(#)_DtMessage 目錄來源 $XConsortium: dthello.msg /main/3 1995/11/08 14:06:18 rswiston $:"
+
+diff --git a/cde/programs/localized/zh_TW.UTF-8/palettes/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/palettes/Makefile.am
+new file mode 100644
+index 000000000..c089d02a5
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/palettes/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/palettes.am
+diff --git a/cde/programs/localized/zh_TW.UTF-8/types/Makefile.am b/cde/programs/localized/zh_TW.UTF-8/types/Makefile.am
+new file mode 100644
+index 000000000..c09fdd5a4
+--- /dev/null
++++ b/cde/programs/localized/zh_TW.UTF-8/types/Makefile.am
+@@ -0,0 +1,4 @@
++MAINTAINERCLEANFILES = Makefile.in
++
++include ../../templates/Chinese_TW.am
++include ../../templates/types.am
